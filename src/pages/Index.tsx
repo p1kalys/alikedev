@@ -11,8 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 const Index = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const { toast } = useToast();
-  
-  // Application state
+
   const [currentLocation, setCurrentLocation] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -133,10 +132,10 @@ const Index = () => {
       )}
 
       {/* Footer */}
-      <footer className="border-t border-border bg-surface/50 py-8 mt-16">
+      <footer className="border-t border-border bg-surface/50 py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-sm text-muted-foreground">
-            <p>© 2024 AlikeDev. Discover professionals worldwide across multiple platforms.</p>
+            <p>© 2025 AlikeDev, Inc.</p> 
           </div>
         </div>
       </footer>

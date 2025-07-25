@@ -9,7 +9,7 @@ export const useTheme = () => {
     }
     
     // Fall back to system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return true;
   });
 
   useEffect(() => {

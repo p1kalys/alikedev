@@ -31,45 +31,8 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="flex items-center justify-center w-8 h-8 bg-gradient-primary rounded-lg">
-              <Users className="w-5 h-5 text-primary-foreground" />
-            </div>
             <span className="text-xl font-bold text-foreground">AlikeDev</span>
           </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-muted-foreground hover:text-foreground"
-              onClick={() => {
-                toast({
-                  title: "Discover",
-                  description: "Explore professionals worldwide",
-                  duration: 2000,
-                });
-              }}
-            >
-              <Globe2 className="w-4 h-4 mr-2" />
-              Discover
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-muted-foreground hover:text-foreground"
-              onClick={() => {
-                toast({
-                  title: "Network",
-                  description: "Build your professional network",
-                  duration: 2000,
-                });
-              }}
-            >
-              <Users className="w-4 h-4 mr-2" />
-              Network
-            </Button>
-          </nav>
 
           {/* Location Search */}
           <div className="hidden lg:flex items-center flex-1 max-w-md mx-8 relative">
@@ -95,7 +58,6 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
                 </Button>
               </div>
               
-              {/* Recent Searches Dropdown */}
               {isSearchFocused && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg shadow-lg p-2 animate-slide-up">
                   <div className="text-xs font-medium text-muted-foreground px-3 py-2">Recent searches</div>
@@ -118,9 +80,7 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
             </form>
           </div>
 
-          {/* Right Side Actions */}
           <div className="flex items-center space-x-2">
-            {/* Theme Toggle */}
             <Button
               variant="ghost"
               size="sm"
@@ -135,7 +95,6 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
               )}
             </Button>
 
-            {/* Mobile Menu Toggle */}
             <Button
               variant="ghost"
               size="sm"
@@ -152,7 +111,6 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-border py-4 animate-slide-up">
             {/* Mobile Location Search */}
@@ -176,40 +134,6 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
                 </Button>
               </div>
             </form>
-
-            {/* Mobile Navigation */}
-            <nav className="space-y-2">
-              <Button 
-                variant="ghost" 
-                className="w-full justify-start"
-                onClick={() => {
-                  toast({
-                    title: "Discover",
-                    description: "Explore professionals worldwide",
-                    duration: 2000,
-                  });
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <Globe2 className="w-4 h-4 mr-2" />
-                Discover
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="w-full justify-start"
-                onClick={() => {
-                  toast({
-                    title: "Network",
-                    description: "Build your professional network",
-                    duration: 2000,
-                  });
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <Users className="w-4 h-4 mr-2" />
-                Network
-              </Button>
-            </nav>
           </div>
         )}
       </div>

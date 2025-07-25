@@ -20,7 +20,7 @@ export const ProfileGrid = ({
   onResultsCount
 }: ProfileGridProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const profilesPerPage = 9;
+  const profilesPerPage = 12;
   const { toast } = useToast();
 
   // Generate mock data
@@ -32,11 +32,6 @@ export const ProfileGrid = ({
       'Senior Software Engineer', 'Product Manager', 'UX Designer', 'Data Scientist',
       'Frontend Developer', 'Backend Engineer', 'DevOps Engineer', 'Marketing Director',
       'Sales Manager', 'Business Analyst', 'Project Manager', 'Technical Lead'
-    ];
-    
-    const companies = [
-      'Tech Innovators Inc', 'Digital Solutions Ltd', 'Future Systems Corp', 'Agile Dynamics',
-      'Cloud Nine Technologies', 'Pixel Perfect Studio', 'Data Driven Analytics', 'Smart Solutions'
     ];
 
     const skills = [
@@ -52,13 +47,11 @@ export const ProfileGrid = ({
       const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
       const platform = platforms[Math.floor(Math.random() * platforms.length)];
       const title = titles[Math.floor(Math.random() * titles.length)];
-      const company = companies[Math.floor(Math.random() * companies.length)];
       
       return {
         id: `prof-${i + 1}`,
         name: `${firstName} ${lastName}`,
         title,
-        company,
         location,
         platform,
         profileUrl: `https://${platform}.com/${firstName.toLowerCase()}${lastName.toLowerCase()}`,
@@ -80,7 +73,6 @@ export const ProfileGrid = ({
         const matchesSearch = 
           prof.name.toLowerCase().includes(query) ||
           prof.title.toLowerCase().includes(query) ||
-          prof.company.toLowerCase().includes(query) ||
           prof.bio?.toLowerCase().includes(query);
         
         if (!matchesSearch) return false;
@@ -133,22 +125,6 @@ export const ProfileGrid = ({
             {filteredProfessionals.length} professionals found
           </p>
         </div>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="flex-shrink-0"
-          onClick={() => {
-            toast({
-              title: "Export Started",
-              description: "Preparing your professional network data...",
-              duration: 3000,
-            });
-          }}
-        >
-          <Download className="w-4 h-4 mr-2" />
-          <span className="hidden sm:inline">Export Results</span>
-          <span className="sm:hidden">Export</span>
-        </Button>
       </div>
 
       {/* Profile Grid */}

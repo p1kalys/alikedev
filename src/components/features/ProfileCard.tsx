@@ -8,7 +8,6 @@ export interface Professional {
   id: string;
   name: string;
   title: string;
-  company: string;
   location: string;
   platform: 'linkedin' | 'twitter' | 'github' | 'behance';
   profileUrl: string;
@@ -68,7 +67,6 @@ export const ProfileCard = ({ professional, index }: ProfileCardProps) => {
               )}
             </div>
             <p className="text-xs lg:text-sm text-muted-foreground truncate">{professional.title}</p>
-            <p className="text-xs text-muted-foreground truncate">{professional.company}</p>
           </div>
         </div>
         

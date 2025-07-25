@@ -80,7 +80,7 @@ export const HeroSection = ({ onLocationSearch }: HeroSectionProps) => {
                       placeholder="Enter city, country, or coordinates..."
                       value={locationInput}
                       onChange={(e) => setLocationInput(e.target.value)}
-                      className="pl-12 h-12 text-base border-0 bg-transparent focus:ring-0 focus:outline-none"
+                      className="pl-12 h-12 text-base border-0 bg-transparent"
                     />
                   </div>
                   <Button 
