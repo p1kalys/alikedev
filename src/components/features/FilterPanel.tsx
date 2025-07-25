@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Search, Filter, X, Linkedin, Twitter, Github, Globe, ChevronDown } from "lucide-react";
+import { Search, Filter, SortAsc } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface FilterPanelProps {
@@ -18,10 +18,10 @@ interface FilterPanelProps {
 }
 
 const platforms = [
-  { id: 'linkedin', name: 'LinkedIn', icon: Linkedin, color: 'text-blue-600' },
-  { id: 'twitter', name: 'X (Twitter)', icon: Twitter, color: 'text-slate-900 dark:text-white' },
-  { id: 'github', name: 'GitHub', icon: Github, color: 'text-slate-900 dark:text-white' },
-  { id: 'behance', name: 'Behance', icon: Globe, color: 'text-blue-500' },
+  { id: 'linkedin', name: 'LinkedIn', icon: Search, color: '#0077b5', count: 1243 },
+  { id: 'twitter', name: 'X (Twitter)', icon: Search, color: '#1da1f2', count: 856 },
+  { id: 'github', name: 'GitHub', icon: Search, color: '#333', count: 678 },
+  { id: 'behance', name: 'Behance', icon: Search, color: '#1769ff', count: 432 },
 ];
 
 const sortOptions = [
@@ -40,191 +40,89 @@ export const FilterPanel = ({
   onSortChange,
   totalResults
 }: FilterPanelProps) => {
-  const [isExpanded, setIsExpanded] = useState(true);
-
-  const clearFilters = () => {
-    onSearchChange('');
-    selectedPlatforms.forEach(platform => onPlatformToggle(platform));
-    onSortChange('relevance');
-  };
-
-  const hasActiveFilters = searchQuery || selectedPlatforms.length > 0 || sortBy !== 'relevance';
-
   return (
-    <Card className="bg-card border border-border">
-      {/* Header */}
-      <div className="p-4 border-b border-border">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-muted-foreground" />
-            <span className="font-medium text-foreground">Filters</span>
-            {totalResults > 0 && (
-              <Badge variant="secondary" className="bg-primary-muted text-primary text-xs">
-                {totalResults.toLocaleString()}
-              </Badge>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
-              >
-                Clear all
-              </Button>
-            )}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="h-7 w-7 p-0"
-            >
-              <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-            </Button>
+    <div className="space-y-4 lg:space-y-6">
+      {/* Search */}
+      <Card className="p-3 lg:p-4 bg-card border border-border">
+        <div className="space-y-3">
+          <h3 className="font-semibold text-sm lg:text-base text-foreground flex items-center gap-2">
+            <Search className="w-4 h-4" />
+            Search Professionals
+          </h3>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search by name, title, skills..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="pl-10 text-sm lg:text-base bg-background border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
           </div>
         </div>
-      </div>
+      </Card>
 
-      {/* Content */}
-      {isExpanded && (
-        <div className="p-4 space-y-6">
-          {/* Search */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Search Profiles</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search by name, title, company..."
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-10 bg-surface border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
-              />
-              {searchQuery && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onSearchChange('')}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+      {/* Platform Filters */}
+      <Card className="p-3 lg:p-4 bg-card border border-border">
+        <div className="space-y-3 lg:space-y-4">
+          <h3 className="font-semibold text-sm lg:text-base text-foreground flex items-center gap-2">
+            <Filter className="w-4 h-4" />
+            Filter by Platform
+          </h3>
+          <div className="space-y-2 lg:space-y-3">
+            {platforms.map((platform) => (
+              <div key={platform.id} className="flex items-center space-x-3">
+                <Checkbox
+                  id={platform.id}
+                  checked={selectedPlatforms.includes(platform.id)}
+                  onCheckedChange={() => onPlatformToggle(platform.id)}
+                  className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                />
+                <Label
+                  htmlFor={platform.id}
+                  className="flex items-center gap-2 text-sm text-foreground cursor-pointer flex-1 min-w-0"
                 >
-                  <X className="w-3 h-3" />
-                </Button>
-              )}
-            </div>
-          </div>
-
-          {/* Platforms */}
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-foreground">Platforms</label>
-            <div className="space-y-2">
-              {platforms.map((platform) => {
-                const Icon = platform.icon;
-                const isSelected = selectedPlatforms.includes(platform.id);
-                
-                return (
-                  <div
-                    key={platform.id}
-                    className="flex items-center space-x-3 p-2 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
-                    onClick={() => onPlatformToggle(platform.id)}
-                  >
-                    <Checkbox
-                      checked={isSelected}
-                      onCheckedChange={() => onPlatformToggle(platform.id)}
-                      className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                    />
-                    <div className="flex items-center gap-2 flex-1">
-                      <Icon className={`w-4 h-4 ${platform.color}`} />
-                      <span className="text-sm text-foreground">{platform.name}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Sort By */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Sort By</label>
-            <Select value={sortBy} onValueChange={onSortChange}>
-              <SelectTrigger className="bg-surface border-border">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {sortOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Active Filters */}
-          {hasActiveFilters && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Active Filters</label>
-              <div className="flex flex-wrap gap-2">
-                {searchQuery && (
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-primary-muted text-primary border-0 pr-1"
-                  >
-                    Search: {searchQuery}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onSearchChange('')}
-                      className="h-4 w-4 p-0 ml-1 hover:bg-primary/20"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </Badge>
-                )}
-                {selectedPlatforms.map((platformId) => {
-                  const platform = platforms.find(p => p.id === platformId);
-                  if (!platform) return null;
-                  
-                  return (
-                    <Badge 
-                      key={platformId}
-                      variant="secondary" 
-                      className="bg-secondary-muted text-secondary border-0 pr-1"
-                    >
-                      {platform.name}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onPlatformToggle(platformId)}
-                        className="h-4 w-4 p-0 ml-1 hover:bg-secondary/20"
-                      >
-                        <X className="w-3 h-3" />
-                      </Button>
-                    </Badge>
-                  );
-                })}
-                {sortBy !== 'relevance' && (
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-accent-muted text-accent border-0 pr-1"
-                  >
-                    {sortOptions.find(s => s.value === sortBy)?.label}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onSortChange('relevance')}
-                      className="h-4 w-4 p-0 ml-1 hover:bg-accent/20"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </Badge>
-                )}
+                  <platform.icon className="w-4 h-4 flex-shrink-0" style={{ color: platform.color }} />
+                  <span className="truncate">{platform.name}</span>
+                  <span className="text-xs text-muted-foreground ml-auto flex-shrink-0">
+                    {platform.count.toLocaleString()}
+                  </span>
+                </Label>
               </div>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
-      )}
-    </Card>
+      </Card>
+
+      {/* Sort Options */}
+      <Card className="p-3 lg:p-4 bg-card border border-border">
+        <div className="space-y-3 lg:space-y-4">
+          <h3 className="font-semibold text-sm lg:text-base text-foreground flex items-center gap-2">
+            <SortAsc className="w-4 h-4" />
+            Sort by
+          </h3>
+          <Select value={sortBy} onValueChange={onSortChange}>
+            <SelectTrigger className="bg-background border-border text-sm lg:text-base">
+              <SelectValue placeholder="Select sorting option" />
+            </SelectTrigger>
+            <SelectContent className="bg-card border-border">
+              {sortOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value} className="hover:bg-muted text-sm lg:text-base">
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </Card>
+
+      {/* Results Summary */}
+      <Card className="p-3 lg:p-4 bg-primary/5 border border-primary/20">
+        <div className="text-center">
+          <div className="text-xl lg:text-2xl font-bold text-primary">{totalResults.toLocaleString()}</div>
+          <div className="text-xs lg:text-sm text-muted-foreground">professionals found</div>
+        </div>
+      </Card>
+    </div>
   );
 };

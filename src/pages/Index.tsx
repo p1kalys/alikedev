@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { MapPin } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { HeroSection } from "@/components/features/HeroSection";
-import { MapView } from "@/components/features/MapView";
 import { FilterPanel } from "@/components/features/FilterPanel";
 import { ProfileGrid } from "@/components/features/ProfileGrid";
+import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/useTheme";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,7 +14,6 @@ const Index = () => {
   
   // Application state
   const [currentLocation, setCurrentLocation] = useState<string | null>(null);
-  const [isMapVisible, setIsMapVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("relevance");
@@ -21,7 +21,6 @@ const Index = () => {
 
   const handleLocationSearch = (location: string) => {
     setCurrentLocation(location);
-    setIsMapVisible(true);
     
     toast({
       title: "Location Updated",
@@ -54,13 +53,59 @@ const Index = () => {
         <HeroSection onLocationSearch={handleLocationSearch} />
       )}
 
+      {/* Location Display */}
+      {currentLocation && (
+        <div className="bg-gradient-surface border-b border-border">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Discovering professionals in</p>
+                  <p className="font-semibold text-foreground">{currentLocation}</p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentLocation(null)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Change Location
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
       {currentLocation && (
-        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+          <div className="flex flex-col lg:grid lg:grid-cols-4 gap-6 lg:gap-8">
+            {/* Mobile Filters Button */}
+            <div className="lg:hidden">
+              <Button
+                variant="outline"
+                className="w-full justify-between"
+                onClick={() => {
+                  const filtersEl = document.getElementById('mobile-filters');
+                  if (filtersEl) {
+                    filtersEl.classList.toggle('hidden');
+                  }
+                }}
+              >
+                <span>Filters & Search</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </Button>
+            </div>
+
             {/* Sidebar - Filters */}
             <aside className="lg:col-span-1">
-              <div className="sticky top-24 space-y-6">
+              <div id="mobile-filters" className="hidden lg:block lg:sticky lg:top-24 space-y-6">
                 <FilterPanel
                   searchQuery={searchQuery}
                   onSearchChange={setSearchQuery}
@@ -69,13 +114,6 @@ const Index = () => {
                   sortBy={sortBy}
                   onSortChange={setSortBy}
                   totalResults={resultsCount}
-                />
-                
-                {/* Map */}
-                <MapView
-                  location={currentLocation}
-                  isVisible={isMapVisible}
-                  onToggleVisibility={() => setIsMapVisible(!isMapVisible)}
                 />
               </div>
             </aside>

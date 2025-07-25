@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MapPin, Moon, Sun, Menu, X, Search, Users, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 interface HeaderProps {
   onLocationSearch: (location: string) => void;
@@ -13,6 +14,7 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
   const [locationInput, setLocationInput] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const { toast } = useToast();
 
   const handleLocationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,12 +38,34 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <nav className="hidden md:flex items-center space-x-6">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => {
+                toast({
+                  title: "Discover",
+                  description: "Explore professionals worldwide",
+                  duration: 2000,
+                });
+              }}
+            >
               <Globe2 className="w-4 h-4 mr-2" />
               Discover
             </Button>
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => {
+                toast({
+                  title: "Network",
+                  description: "Build your professional network",
+                  duration: 2000,
+                });
+              }}
+            >
               <Users className="w-4 h-4 mr-2" />
               Network
             </Button>
@@ -155,11 +179,33 @@ export const Header = ({ onLocationSearch, darkMode, toggleDarkMode }: HeaderPro
 
             {/* Mobile Navigation */}
             <nav className="space-y-2">
-              <Button variant="ghost" className="w-full justify-start">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start"
+                onClick={() => {
+                  toast({
+                    title: "Discover",
+                    description: "Explore professionals worldwide",
+                    duration: 2000,
+                  });
+                  setIsMobileMenuOpen(false);
+                }}
+              >
                 <Globe2 className="w-4 h-4 mr-2" />
                 Discover
               </Button>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start"
+                onClick={() => {
+                  toast({
+                    title: "Network",
+                    description: "Build your professional network",
+                    duration: 2000,
+                  });
+                  setIsMobileMenuOpen(false);
+                }}
+              >
                 <Users className="w-4 h-4 mr-2" />
                 Network
               </Button>
